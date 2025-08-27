@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입 폼</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh; /* 화면 전체 높이 */
+      display: flex;
+      justify-content: center; /* 가로 가운데 */
+      align-items: center;     /* 세로 가운데 */
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h2 { text-align: center; }
+    label { display: block; margin-top: 10px; }
+    input {
+      padding: 8px;
+      width: 100%;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background-color: #28a745; /* 초록색 */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838; /* hover 시 진한 초록 */
+    }
+    .error { color: red; margin-top: 5px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>회원가입</h2>
+    <form id="signupForm">
+      <label>아이디
+        <input type="text" id="userId">
+      </label>
+      <div id="idError" class="error"></div>
+
+      <label>비밀번호
+        <input type="password" id="password">
+      </label>
+      <div id="pwError" class="error"></div>
+
+      <label>비밀번호 확인
+        <input type="password" id="confirmPassword">
+      </label>
+      <div id="confirmError" class="error"></div>
+
+      <label>전화번호
+        <input type="text" id="phone" placeholder="010-1234-5678">
+      </label>
+      <div id="phoneError" class="error"></div>
+
+      <label>주소
+        <input type="text" id="address">
+      </label>
+      <div id="addressError" class="error"></div>
+
+      <button type="submit">가입하기</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const userId = document.getElementById("userId").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
+
+      // 오류 메시지 초기화
+      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+      let isValid = true;
+
+      // 아이디 검사
+      const idPattern = /^[a-zA-Z0-9]{5,15}$/;
+      if (!idPattern.test(userId)) {
+        document.getElementById("idError").textContent = "아이디는 5~15자의 영문, 숫자만 가능합니다.";
+        isValid = false;
+      }
+
+      // 비밀번호 검사
+      const pwPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+      if (!pwPattern.test(password)) {
+        document.getElementById("pwError").textContent = "비밀번호는 8자 이상, 영문/숫자/특수문자를 모두 포함해야 합니다.";
+        isValid = false;
+      }
+
+      // 비밀번호 확인
+      if (password !== confirmPassword) {
+        document.getElementById("confirmError").textContent = "비밀번호가 일치하지 않습니다.";
+        isValid = false;
+      }
+
+      // 전화번호 검사
+      const phonePattern = /^010-\d{4}-\d{4}$/;
+      if (!phonePattern.test(phone)) {
+        document.getElementById("phoneError").textContent = "전화번호는 010-1234-5678 형식으로 입력하세요.";
+        isValid = false;
+      }
+
+      // 주소 공백 체크
+      if (!address) {
+        document.getElementById("addressError").textContent = "주소를 입력해주세요.";
+        isValid = false;
+      }
+
+      if (isValid) {
+        alert("회원가입 성공!");
+      }
+    });
+  </script>
+</body>
+</html>
